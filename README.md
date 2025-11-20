@@ -40,6 +40,28 @@ Enter output filename: map.rrmap
 
 You will end up with a file map.rrmap that you can open in [Xiaomi Vacuum Map Viewer](https://community.openhab.org/t/xiaomi-vacuum-map-viewer-to-find-coordinates-for-zone-cleaning/103500).
 
+### Captcha Support
+
+If Xiaomi requires a captcha during login (common for new logins or security checks), the tool will:
+1. Download the captcha image and save it as `captcha.png` in the current directory
+2. Prompt you to open the image and enter the captcha code
+3. Automatically retry the login with the provided code
+
+Example flow with captcha:
+```
+$ node main.js
+Enter email: YOUR_EMAIL
+Enter password: YOUR_PASSWORD
+Enter server (cn, de, i2, ru, sg, us): de
+Captcha required for login
+Captcha image saved to captcha.png
+Please open the captcha image and enter the code below.
+Enter captcha code: ABCD123
+------------------
+Found devices:
+...
+```
+
 
 ## Debug logs
 
