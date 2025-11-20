@@ -21,9 +21,23 @@ Now you can connect to your cloud account and your vacuum and download the map:
 
 ```
 $ node main.js
-Enter email: YOUR_EMAIL
-Enter password: YOUR_PASSWORD
 Enter server (cn, de, i2, ru, sg, us): de
+------------------
+Xiaomi Cloud OAuth Login
+------------------
+Please open the following URL in your browser to authenticate:
+
+https://account.xiaomi.com/pass/serviceLogin?sid=xiaomiio&callback=http%3A%2F%2Flocalhost%3A8765%2Fcallback&_json=true
+
+Waiting for authentication callback...
+------------------
+```
+
+Open the provided URL in your browser, log in with your Xiaomi account credentials, and the program will automatically receive the authentication callback.
+
+After successful authentication, you'll see:
+
+```
 ------------------
 Found devices:
 ------------------
@@ -40,27 +54,16 @@ Enter output filename: map.rrmap
 
 You will end up with a file map.rrmap that you can open in [Xiaomi Vacuum Map Viewer](https://community.openhab.org/t/xiaomi-vacuum-map-viewer-to-find-coordinates-for-zone-cleaning/103500).
 
-### Captcha Support
+### Authentication
 
-If Xiaomi requires a captcha during login (common for new logins or security checks), the tool will:
-1. Download the captcha image and save it as `captcha.png` in the current directory
-2. Prompt you to open the image and enter the captcha code
-3. Automatically retry the login with the provided code
+The tool uses Xiaomi's OAuth flow for authentication. When you run the program:
 
-Example flow with captcha:
-```
-$ node main.js
-Enter email: YOUR_EMAIL
-Enter password: YOUR_PASSWORD
-Enter server (cn, de, i2, ru, sg, us): de
-Captcha required for login
-Captcha image saved to captcha.png
-Please open the captcha image and enter the code below.
-Enter captcha code: ABCD123
-------------------
-Found devices:
-...
-```
+1. It will display a URL that you need to open in your browser
+2. Log in with your Xiaomi account credentials in the browser
+3. After successful login, Xiaomi will redirect back to the local program
+4. The program will automatically extract the authentication token
+
+The local callback server runs on port 8765. Make sure this port is not blocked by your firewall.
 
 
 ## Debug logs
