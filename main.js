@@ -48,6 +48,40 @@ const adapter_helper = {
 	setConnection: () => {
 		/* dummy */
 	},
+	getCaptchaCode: async function (captchaUrl) {
+		const request = require("request");
+		const captchaFilename = "captcha.png";
+
+		// Download the captcha image
+		return new Promise((resolve, reject) => {
+			request({ url: captchaUrl, encoding: null }, (error, response, body) => {
+				if (error) {
+					return reject(error);
+				}
+				if (response.statusCode !== 200) {
+					return reject(`Failed to download captcha: ${response.statusCode}`);
+				}
+
+				// Save captcha to file
+				fs.writeFileSync(captchaFilename, body);
+				console.log(`Captcha image saved to ${captchaFilename}`);
+				console.log("Please open the captcha image and enter the code below.");
+
+				// Prompt user for captcha code
+				input("Enter captcha code: ")
+					.then((code) => {
+						// Clean up the captcha file
+						try {
+							fs.unlinkSync(captchaFilename);
+						} catch (e) {
+							// Ignore error if file doesn't exist
+						}
+						resolve(code);
+					})
+					.catch((err) => reject(err));
+			});
+		});
+	},
 };
 
 async function main() {
