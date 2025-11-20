@@ -85,15 +85,11 @@ const adapter_helper = {
 };
 
 async function main() {
-	const email = await input("Enter email: ");
-	const password = await input("Enter password: ");
 	const server = await input("Enter server (cn, de, i2, ru, sg, us): ");
-	adapter_helper.config.email = email;
-	adapter_helper.config.password = password;
 	adapter_helper.config.server = server;
 
 	const miApi = new MapHelper(undefined, adapter_helper);
-	const devices = await miApi.getDeviceStatus(email, password, server);
+	const devices = await miApi.getDeviceStatus(null, null, server);
 
 	adapter_helper.log.info("------------------");
 	adapter_helper.log.info("Found devices:");
